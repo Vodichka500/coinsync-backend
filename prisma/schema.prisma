@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String
+  role     Role    @default(USER)
+}
+
+enum CurrencyType {
+  CRYPTO
+  FIAT
+}
+
+model Currency {
+  id        Int          @id @default(autoincrement())
+  name      String
+  symbol    String
+  type      CurrencyType
+  createdAt DateTime     @default(now())
+
+  days         CurrencyDay[]
+  comparisonsA CurrencyPairComparison[] @relation("CurrencyA")
+  comparisonsB CurrencyPairComparison[] @relation("CurrencyB")
+}
+
+model CurrencyDay {
+  id         Int      @id @default(autoincrement())
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  currencyId Int
+  date       DateTime
+  value      Float
+
+  @@unique([currencyId, date])
+}
+
+model CurrencyPairComparison {
+  id          Int      @id @default(autoincrement())
+  currencyA   Currency @relation("CurrencyA", fields: [currencyAId], references: [id])
+  currencyAId Int
+
+  currencyB   Currency @relation("CurrencyB", fields: [currencyBId], references: [id])
+  currencyBId Int
+
+  periodStart DateTime
+  periodEnd   DateTime
+
+  averageRatio   Float?
+  maxRatio       Float?
+  minRatio       Float?
+  volatility     Float?
+  priceChangeA   Float?
+  priceChangeB   Float?
+  recommendation String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([currencyAId, currencyBId, periodStart, periodEnd])
+}
