@@ -15,6 +15,21 @@ import selectFirstPricePerDay from '@/common/lib/selectFirstPricePerDay';
 export class ComparisonService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getUserComparisons(userId: number): Promise<CurrencyPairComparison[]> {
+    try {
+      return await this.prisma.currencyPairComparison.findMany({
+        where: { userId: userId },
+        include: {
+          currencyA: true,
+          currencyB: true,
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (error) {
+      console.error('Get user comparisons error:', error);
+      throw new Error('Failed to retrieve user comparisons.');
+    }
+  }
   async getById(id: number): Promise<CurrencyPairComparison | null> {
     try {
       const comparisonWithDetails =

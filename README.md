@@ -1,98 +1,279 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🧠 CoinSync API Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**Backend:** NestJS + Prisma + PostgreSQL
+**Base URL:** `http://localhost:4012/api`
+---
+Coinsync is a backend service for managing cryptocurrency and fiat currency comparisons. It supports user authentication and authorization, fetches data from external APIs, and stores comparison results in a PostgreSQL database. The backend is built with modern technologies to ensure security, scalability, and maintainability.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Technologies Used
 
-## Description
+- **NestJS** — Framework for building efficient, scalable Node.js server-side applications
+- **PrismaORM** — ORM for database modeling and querying PostgreSQL
+- **PostgreSQL** — Relational database system for storing user and comparison data
+- **Passport.js** — Authentication middleware
+- **JWT (JSON Web Tokens)** — Token-based authentication
+- **Docker & Docker Compose** — Containerization and orchestration for easy deployment
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+---
+## 🛠️ Installation and Setup
+1. Create a `.env` file in the root directory of the backend with the following content:
 
-```bash
-$ npm install
+```
+DATABASE_URL=postgresql://admin:admin@database:5432/coinsync
+JWT_SECRET="bambaleyla"
+PORT=4012
 ```
 
-## Compile and run the project
+2. Ensure you have Docker installed and running.
+3. Run the following command to start the backend and database:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cd path/to/project/backend
+docker-compose up --build
 ```
 
-## Run tests
+After the containers are up, the API will be available at `http://localhost:4012/api`.
 
-```bash
-# unit tests
-$ npm run test
+---
 
-# e2e tests
-$ npm run test:e2e
+## 🔐 Auth Endpoints
 
-# test coverage
-$ npm run test:cov
+### 🔸 Register
+
+* **POST** `/auth/register`
+* **Auth:** ❌
+
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "password": "password123",
+  "confirmPassword": "password123"
+}
 ```
 
-## Deployment
+**Response:**
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```json
+{
+  "message": "User registered successfully",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "name": "John Doe",
+    "role": "USER"
+  }
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+### 🔸 Login
 
-Check out a few resources that may come in handy when working with NestJS:
+* **POST** `/auth/login`
+* **Auth:** ❌
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Request Body:**
 
-## Support
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Response:**
 
-## Stay in touch
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR..."
+}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
+### 🔸 Get User Profile
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+* **GET** `/users/profile`
+* **Auth:** ✅ (Bearer token)
+
+**Headers:**
+
+```
+Authorization: Bearer <accessToken>
+```
+
+**Response:**
+
+```json
+{
+  "id": 1,
+  "email": "user@example.com",
+  "name": "John Doe",
+  "role": "USER"
+}
+```
+
+---
+
+## 👤 User Management (Admin only)
+
+### 🔸 Delete User by ID
+
+* **DELETE** `/users/:id`
+* **Auth:** ✅ (Admin only)
+
+**Response:**
+
+```json
+{
+  "message": "User deleted successfully"
+}
+```
+
+---
+
+## 💱 Currency Endpoints
+
+### 🔸 Get Fiat Currencies
+
+* **GET** `/currency/fiat`
+* **Auth:** ❌
+
+**Response:**
+
+```json
+[
+  { "symbol": "USD", "name": "US Dollar" },
+  { "symbol": "EUR", "name": "Euro" },
+  { "symbol": "PLN", "name": "Polish Zloty" }
+]
+```
+
+---
+
+### 🔸 Get Crypto Currencies
+
+* **GET** `/currency/crypto`
+* **Auth:** ❌
+
+**Response:**
+
+```json
+[
+  { "id": "bitcoin", "symbol": "BTC", "name": "Bitcoin" },
+  { "id": "ethereum", "symbol": "ETH", "name": "Ethereum" }
+]
+```
+
+---
+
+## 📊 Currency Comparison
+
+### 🔸 Create a Comparison
+
+* **POST** `/comparison/compare`
+* **Auth:** ✅ (USER or ADMIN)
+
+**Request Body:**
+
+```json
+{
+  "cryptoId": "bitcoin",
+  "fiatSymbol": "EUR",
+  "startDate": "2025-01-01T00:00:00Z",
+  "endDate": "2025-01-05T00:00:00Z"
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": 7,
+  "userId": 1,
+  "cryptoId": "bitcoin",
+  "fiatSymbol": "EUR",
+  "startDate": "2025-01-01T00:00:00.000Z",
+  "endDate": "2025-01-05T00:00:00.000Z",
+  "data": [
+    { "date": "2025-01-01", "crypto": 42800.0, "fiat": 0.85 },
+    { "date": "2025-01-02", "crypto": 43200.0, "fiat": 0.86 }
+  ]
+}
+```
+
+---
+
+### 🔸 Get All Comparisons for Logged-in User
+
+* **GET** `/comparison/user`
+* **Auth:** ✅
+
+**Response:**
+
+```json
+[
+  {
+    "id": 7,
+    "cryptoId": "bitcoin",
+    "fiatSymbol": "EUR",
+    "startDate": "2025-01-01T00:00:00.000Z",
+    "endDate": "2025-01-05T00:00:00.000Z",
+    "createdAt": "2025-06-08T10:00:00.000Z"
+  }
+]
+```
+
+---
+
+### 🔸 Get Comparison by ID
+
+* **GET** `/comparison/:id`
+* **Auth:** ✅
+
+**Response:**
+
+```json
+{
+  "id": 7,
+  "cryptoId": "bitcoin",
+  "fiatSymbol": "EUR",
+  "startDate": "2025-01-01T00:00:00.000Z",
+  "endDate": "2025-01-05T00:00:00.000Z",
+  "data": [
+    { "date": "2025-01-01", "crypto": 42800.0, "fiat": 0.85 },
+    { "date": "2025-01-02", "crypto": 43200.0, "fiat": 0.86 }
+  ]
+}
+```
+
+---
+
+### 🔸 Delete All Comparisons (Admin only)
+
+* **POST** `/comparison/1`
+* **Auth:** ✅ (Admin only)
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "message": "All comparisons deleted successfully"
+}
+```
+
+---
+
+## 🗂 Example Auth Header
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR...
+```
+
+---
+

@@ -26,18 +26,29 @@ export class ComparisonController {
     );
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER', 'ADMIN')
-  @Get(':id')
-  getById(@Param('id') id: string) {
-    const numId: number = parseInt(id, 10);
-    return this.ComparisonService.getById(numId);
-  }
+
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Delete('all')
   deleteAllComparisons() {
     return this.ComparisonService.deleteAllComparisons();
+  }
+
+  @Get('user')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER', 'ADMIN')
+  getUserComparisons(
+    @User() user: { userId: number; email: string; role: 'USER' | 'ADMIN' },
+  ) {
+    return this.ComparisonService.getUserComparisons(user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER', 'ADMIN')
+  @Get(':id')
+  getById(@Param('id') id: string) {
+    const numId: number = parseInt(id, 10);
+    return this.ComparisonService.getById(numId);
   }
 }
