@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -20,11 +20,14 @@ enum Role {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  role     Role    @default(USER)
+  id                      Int                      @id @default(autoincrement())
+  email                   String                   @unique
+  name                    String?
+  password                String
+  role                    Role                     @default(USER)
+  currencyPairComparisons CurrencyPairComparison[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
 }
 
 enum CurrencyType {
@@ -33,12 +36,13 @@ enum CurrencyType {
 }
 
 model Currency {
-  id        Int          @id @default(autoincrement())
-  name      String
-  symbol    String
-  type      CurrencyType
-  createdAt DateTime     @default(now())
-
+  id           Int                      @id @default(autoincrement())
+  name         String
+  symbol       String
+  type         CurrencyType
+  createdAt    DateTime                 @default(now())
+  periodStart  DateTime
+  periodEnd    DateTime
   days         CurrencyDay[]
   comparisonsA CurrencyPairComparison[] @relation("CurrencyA")
   comparisonsB CurrencyPairComparison[] @relation("CurrencyB")
@@ -46,7 +50,7 @@ model Currency {
 
 model CurrencyDay {
   id         Int      @id @default(autoincrement())
-  currency   Currency @relation(fields: [currencyId], references: [id])
+  currency   Currency @relation(fields: [currencyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   currencyId Int
   date       DateTime
   value      Float
@@ -74,6 +78,8 @@ model CurrencyPairComparison {
   recommendation String?
 
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 
   @@unique([currencyAId, currencyBId, periodStart, periodEnd])
 }
