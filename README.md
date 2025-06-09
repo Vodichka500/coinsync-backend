@@ -239,15 +239,65 @@ Authorization: Bearer <accessToken>
 
 ```json
 {
-  "id": 7,
-  "cryptoId": "bitcoin",
-  "fiatSymbol": "EUR",
-  "startDate": "2025-01-01T00:00:00.000Z",
-  "endDate": "2025-01-05T00:00:00.000Z",
-  "data": [
-    { "date": "2025-01-01", "crypto": 42800.0, "fiat": 0.85 },
-    { "date": "2025-01-02", "crypto": 43200.0, "fiat": 0.86 }
-  ]
+    "id": 2,
+    "currencyAId": 37,
+    "currencyBId": 38,
+    "periodStart": "2025-01-06T12:00:00.000Z",
+    "periodEnd": "2025-01-12T12:00:00.000Z",
+    "averageRatio": 93348.81076891569,
+    "maxRatio": 98422.36282579506,
+    "minRatio": 89650.88876500486,
+    "volatility": 2652.874077907001,
+    "priceChangeA": -0.04687642749475013,
+    "priceChangeB": -0.01170151544216381,
+    "recommendation": "Neutral",
+    "createdAt": "2025-06-08T17:29:25.205Z",
+    "userId": 6,
+    "currencyA": {
+        "id": 37,
+        "name": "Bitcoin",
+        "symbol": "btc",
+        "type": "CRYPTO",
+        "createdAt": "2025-06-08T17:29:25.097Z",
+        "periodStart": "2025-01-06T12:00:00.000Z",
+        "periodEnd": "2025-01-12T12:00:00.000Z",
+        "days": [
+            {
+                "id": 3130,
+                "currencyId": 37,
+                "date": "2025-01-06T12:04:03.575Z",
+                "value": 99223.43302212954
+            },
+           ...
+        ]
+    },
+    "currencyB": {
+        "id": 38,
+        "name": "EUR",
+        "symbol": "EUR",
+        "type": "FIAT",
+        "createdAt": "2025-06-08T17:29:25.137Z",
+        "periodStart": "2025-01-06T12:00:00.000Z",
+        "periodEnd": "2025-01-12T12:00:00.000Z",
+        "days": [
+            {
+                "id": 3274,
+                "currencyId": 38,
+                "date": "2025-01-06T00:00:00.000Z",
+                "value": 1.0426
+            },
+            ...
+        ]
+    },
+    "user": {
+        "id": 6,
+        "email": "user-email@emial.com",
+        "name": null,
+        "password": "$2b$10$RFU7CucfTD3ZC4jP/QgjDu7qztINcS0ppxos.yAoDmZlU0KEgBHee",
+        "role": "USER",
+        "createdAt": "2025-06-08T09:44:45.839Z",
+        "updatedAt": "2025-06-08T09:44:45.839Z"
+    }
 }
 ```
 
